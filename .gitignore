@@ -1,0 +1,4 @@
+.idea/
+venv/
+player_list.txt
+__pycache__/
