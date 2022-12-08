@@ -104,6 +104,7 @@ class Interface:
         self.loser_w = {"y": 3, "x": 7, "sy": 1, "sx": 4}
 
     def start_music(self):
+        """Gets the mp3 file and starts play the song in loop"""
         url = QUrl.fromLocalFile("Blue-Ridge_Looping.mp3")
         self.playlist.addMedia(QMediaContent(url))
         self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
@@ -112,6 +113,7 @@ class Interface:
         self.player.play()
 
     def start_image(self):
+        """Opens the gui window, starts the music and opens the game menu"""
         self.window.show()
         self.window.setStyleSheet("background-image: url(start.png);")
         QtTest.QTest.qWait(1000)
@@ -119,12 +121,14 @@ class Interface:
         self.menu_background()
 
     def set_grid(self):
+        """Sets the number of columns and rows, and their dimension in pixels"""
         for i in range(self.col_min_wid[0]):
             self.grid.setColumnMinimumWidth(i, self.col_min_wid[1])
         for i in range(self.row_min_hei[0]):
             self.grid.setRowMinimumHeight(i, self.row_min_hei[1])
 
     def clear_widget(self):
+        """Clears the widgets from the grid and reinitialise the variables that stored situational information"""
         self.widgets = {}
         self.score_list = {}
         self.r_list = {}
@@ -145,6 +149,7 @@ class Interface:
             self.grid.itemAt(i).widget().setParent(None)
 
     def clicked_rules_menu(self):
+        """The actions that will happen when rules button is clicked"""
         self.rules = True
         self.clear_widget()
         self.window.setStyleSheet("background-image: url(rules.png);")
@@ -158,6 +163,7 @@ class Interface:
                                  self.rules_mute_button["sy"], self.rules_mute_button["sx"])
 
     def clicked_scores(self):
+        """The actions that will happen when scores button is clicked"""
         self.scores = True
         self.clear_widget()
         self.window.setStyleSheet("background-image: url(scores.png);")
@@ -196,6 +202,7 @@ class Interface:
                                  self.scores_mute_button["sy"], self.scores_mute_button["sx"])
 
     def clicked_history(self):
+        """The actions that will happen when history button is clicked"""
         self.clear_widget()
         self.window.setStyleSheet("background-image: url(history.png);")
         back_button = self.create_menu_button("Back", self.menu_background, "brick3.png", self.window)
@@ -209,6 +216,7 @@ class Interface:
 
     @staticmethod
     def create_menu_button(button_label, function, img, parent, margin_l=0, margin_r=0):
+        """Sets a button design for the game menu"""
         button = QPushButton(button_label, parent)
         button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         button.setStyleSheet(
@@ -232,6 +240,7 @@ class Interface:
         return button
 
     def clicked_mute_button(self):
+        """The actions that will happen when music button is clicked (in order to stop the music)"""
         self.widgets["sound_on"].deleteLater()
         self.widgets["sound_on"] = None
         self.widgets["sound_on"] = ""
@@ -253,6 +262,7 @@ class Interface:
         self.widgets["mute_button"] = mute_button
 
     def clicked_sound_on(self):
+        """The actions that will happen when mute button is clicked (in order to play the music)"""
         self.widgets["mute_button"].deleteLater()
         self.widgets["mute_button"] = None
         self.widgets["mute_button"] = ""
@@ -275,6 +285,7 @@ class Interface:
 
     @staticmethod
     def create_mute_button(button_label, function, img_0, img_1, parent, margin_l=0, margin_r=0):
+        """Sets the design for music button"""
         button = QPushButton(button_label, parent)
         button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         button.setStyleSheet(
@@ -299,6 +310,7 @@ class Interface:
         return button
 
     def create_music_button(self, y, x, sy, sx):
+        """Create the music button and add it to the grid"""
         if self.sound is True:
             sound_on = self.create_mute_button("", self.clicked_mute_button, "sound_on.png", "mute.png", self.window)
             sound_on.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -311,6 +323,7 @@ class Interface:
             self.widgets["mute_button"] = mute_button
 
     def set_menu_buttons(self, button_list):
+        """Sets all the buttons on the game menu page"""
         if self.widgets:
             self.clear_widget()
         for button in button_list:
@@ -321,6 +334,7 @@ class Interface:
             self.widgets[button["name"]] = button_el
 
     def menu_background(self):
+        """Sets all the widgets on menu page and adds the computer player to the data base if it is the case"""
         self.rules = False
         self.scores = False
         self.clear_widget()
@@ -333,6 +347,7 @@ class Interface:
         PlayerDB.add_computer_player()
 
     def add_error_label(self, text, key, y, x, sy, sx):
+        """Sets the design for error labels"""
         label = QLabel(text, self.window)
         label.setAlignment(Qt.AlignCenter)
         label.setStyleSheet(
@@ -353,6 +368,7 @@ class Interface:
         self.widgets[key] = label
 
     def add_player(self, nickname):
+        """Adds a new player to the data base"""
         add_player = PlayerDB.add_new_player(nickname)
         if add_player == -1:
             self.add_error_label("This player already exists", "player_already_exists", self.pl_al_exists["y"],
@@ -369,6 +385,7 @@ class Interface:
         self.widgets["lineedit"].clear()
 
     def create_line_edit(self, y, x, sy=1, sx=1):
+        """Creates a line edit in order to be able to add new players to the game"""
         hbox = QHBoxLayout(self.window)
         lineedit = QLineEdit(self.window)
         lineedit.setStyleSheet("background-image: url(bluebackground.png); background-position: center;")
@@ -380,6 +397,7 @@ class Interface:
         self.widgets["lineedit"] = lineedit
 
     def clicked_del_button(self):
+        """The actions that will happen when delete player button is clicked"""
         if self.selected_player[0] == "":
             return
 
@@ -430,18 +448,8 @@ class Interface:
         self.r_list.pop(self.selected_player[0])
         self.l_list.pop(self.selected_player[0])
 
-    '''
-                color: '#138CFC';
-                border-radius: 45px;
-                height: 150px;
-                width : 100px;
-                font: bold 10px;
-                font-family: 'Trebuchet MS';
-                font-size: 20px;
-                background-image: url(button_backgound.png);}
-                '''
-
     def del_player_button(self, y, x, sy=1, sx=1):
+        """Sets the delete player button"""
         del_button = QPushButton("Delete selected player", self.window)
         del_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         del_button.setStyleSheet(
@@ -461,6 +469,7 @@ class Interface:
         self.widgets["del_button"] = del_button
 
     def add_pl_label(self, text, key, y, x, sy, sx):
+        """Sets the design for player labels"""
         label = QLabel(text, self.window)
         label.setAlignment(Qt.AlignCenter)
         label.setStyleSheet(
@@ -480,6 +489,7 @@ class Interface:
         self.widgets[key] = label
 
     def selected_pl_r(self, item):
+        """Actions that will happen if the player was selected from the right list"""
         nickname = QListWidgetItem(item).text()
         self.selected_player = nickname, "r"
         if "right_label" not in self.widgets.keys():
@@ -504,6 +514,7 @@ class Interface:
                     self.widgets["hidden_play_button"].hide()
 
     def selected_pl_l(self, item):
+        """Actions that will happen if the player was selected from the left list"""
         nickname = QListWidgetItem(item).text()
         self.selected_player = nickname, "l"
         if "left_label" not in self.widgets.keys():
@@ -528,6 +539,7 @@ class Interface:
                     self.widgets["hidden_play_button"].hide()
 
     def select_player(self, y, x, sy, sx, location):
+        """Add the players from the data base if any"""
         layout = QGridLayout(self.window)
         self.window.setLayout(layout)
         list_widget = QListWidget(self.window)
@@ -564,6 +576,7 @@ class Interface:
         self.widgets["list_widget"] = list_widget
 
     def create_play_button(self, play_button, parent):
+        """Sets the design for play button"""
         button = QPushButton(play_button["name"], parent)
         button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         button.setStyleSheet(
@@ -580,6 +593,7 @@ class Interface:
         button.hide()
 
     def choose_players(self):
+        """The part of the game where you choose who with who will play, all the widgets are added to the grid"""
         self.clear_widget()
         self.window.setStyleSheet("background-image: url(choose_players.png);")
 
@@ -601,10 +615,12 @@ class Interface:
                                  self.mute_button["sy"], self.mute_button["sx"])
 
     def back_to_game(self):
+        """Hides the widgets that represents the image with the rules and the specific back button"""
         self.widgets["rules_board"].hide()
         self.widgets["back_from_rules"].hide()
 
     def clicked_rules_board(self):
+        """The actions that will happen when rules button is clicked when you are in the middle of the game"""
         label = QLabel("", self.window)
         pixmap = QPixmap('rules.png')
         label.setPixmap(pixmap)
@@ -621,6 +637,7 @@ class Interface:
         self.widgets["back_from_rules"] = back_button
 
     def clicked_leave_option(self, option):
+        """Verifies what option you choose after Leave button was clicked"""
         if option.text() == "Cancel":
             pass
         if option.text() == "OK":
@@ -628,6 +645,7 @@ class Interface:
             self.menu_background()
 
     def clicked_leave(self):
+        """The actions that will happen when Leave button is clicked"""
         leave_msg = QMessageBox(self.window)
         leave_msg.setWindowTitle("Leave the game")
         leave_msg.setText("Are you sure you want to leave the game? \n All the progress will be lost!")
@@ -643,6 +661,7 @@ class Interface:
 
     @staticmethod
     def mancala_button(button_label, function, parent, margin_l=0, margin_r=0):
+        """Sets the design for mancala holes buttons"""
         button = QPushButton(button_label, parent)
         button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         button.setStyleSheet(
@@ -670,6 +689,7 @@ class Interface:
 
     @staticmethod
     def hole_img(text, parent, margin_l=0, margin_r=0):
+        """Sets the design for mancala holes images"""
         label = QLabel(text, parent)
         label.setAlignment(Qt.AlignCenter)
         label.setStyleSheet(
@@ -693,6 +713,7 @@ class Interface:
 
     @staticmethod
     def bank_img(text, parent, margin_l=0, margin_r=0):
+        """Sets the design for mancala banks"""
         label = QLabel(text, parent)
         label.setAlignment(Qt.AlignCenter)
         label.setStyleSheet(
@@ -716,6 +737,7 @@ class Interface:
 
     @staticmethod
     def computer_selected_hole_img(text, parent, margin_l=0, margin_r=0):
+        """Sets the design for mancala holes buttons when the computer selects it"""
         label = QLabel(text, parent)
         label.setAlignment(Qt.AlignCenter)
         label.setStyleSheet(
@@ -738,6 +760,7 @@ class Interface:
         return label
 
     def set_first_player_bank_img(self):
+        """Sets the bank image for the first player"""
         if self.first_player_bank:
             self.first_player_bank.deleteLater()
             self.first_player_bank = None
@@ -752,6 +775,7 @@ class Interface:
         self.first_player_bank = label
 
     def set_second_player_bank_img(self):
+        """Sets the bank for the second player"""
         if self.second_player_bank:
             self.second_player_bank.deleteLater()
             self.second_player_bank = None
@@ -766,6 +790,7 @@ class Interface:
         self.second_player_bank = label
 
     def set_first_player_side_img(self):
+        """Sets the holes images for the first player"""
         if self.first_player_side_img:
             for i in range(6):
                 self.first_player_side_img[i].deleteLater()
@@ -786,6 +811,7 @@ class Interface:
             x += 1
 
     def set_second_player_side_img(self):
+        """Sets the holes images for the second player"""
         if self.second_player_side_img:
             for i in range(6):
                 self.second_player_side_img[i].deleteLater()
@@ -812,6 +838,7 @@ class Interface:
             x -= 1
 
     def set_computer_side(self):
+        """Sets the holes images for the computer player"""
         if self.computer_side:
             for i in range(6):
                 self.computer_side[i].deleteLater()
@@ -838,6 +865,7 @@ class Interface:
                 x -= 1
 
     def selected_hole_first_player(self):
+        """Choose what will happen after the first player selects a hole"""
         self.current_player = self.game.first_player
         temp = self.window.sender()
         for key, value in self.first_player_side_widgets.items():
@@ -849,6 +877,7 @@ class Interface:
                     self.game.move(self.game.first_player, key)
 
     def set_first_player_side(self):
+        """Sets the buttons for board holes for the first player"""
         if self.first_player_side_widgets:
             for i in range(6):
                 self.first_player_side_widgets[i].deleteLater()
@@ -870,6 +899,7 @@ class Interface:
             x += 1
 
     def selected_hole_second_player(self):
+        """Choose what will happen after the second player selects a hole"""
         self.current_player = self.game.second_player
         temp = self.window.sender()
         for key, value in self.second_player_side_widgets.items():
@@ -878,6 +908,7 @@ class Interface:
                 self.evaluate_board_multiplayer(new_board, next_player)
 
     def set_second_player_side(self):
+        """Sets the buttons for board holes for the second player"""
         if self.second_player_side_widgets:
             for i in range(6):
                 self.second_player_side_widgets[i].deleteLater()
