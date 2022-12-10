@@ -6,6 +6,7 @@ INVALID_NICKNAME = "Computer"
 
 
 def get_player_list():
+    """Returns a list with all the players that played in the past and how many times they won"""
     pl_list = []
     current_dir_path = os.getcwd()
     player_list = "player_list.txt"
@@ -22,6 +23,7 @@ def get_player_list():
 
 
 def add_computer_player():
+    """Adds the Computer player to the players list"""
     current_dir_path = os.getcwd()
     player_list = "player_list.txt"
     file_path = os.path.join(current_dir_path, player_list)
@@ -34,6 +36,7 @@ def add_computer_player():
 
 
 def add_new_player(new_player):
+    """Adds a new player to the players list"""
     players = get_player_list()
     for player in players:
         if new_player == player["name"]:
@@ -56,6 +59,7 @@ def add_new_player(new_player):
 
 
 def delete_player(name):
+    """Deletes a player from the players list"""
     players_list = []
     player_list = "player_list.txt"
     handler = open(player_list, "r")
@@ -79,6 +83,7 @@ def delete_player(name):
 
 
 def save_wins(winner):
+    """Increments the number of wins for the player who won"""
     players_list = get_player_list()
     for player in players_list:
         if player["name"] == winner:
