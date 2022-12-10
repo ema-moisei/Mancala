@@ -128,7 +128,7 @@ class Interface:
             self.grid.setRowMinimumHeight(i, self.row_min_hei[1])
 
     def clear_widget(self):
-        """Clears the widgets from the grid and reinitialise the variables that stored situational information"""
+        """Clears the widgets from the grid and resets the variables that stored situational information"""
         self.widgets = {}
         self.score_list = {}
         self.r_list = {}
@@ -593,7 +593,7 @@ class Interface:
         button.hide()
 
     def choose_players(self):
-        """The part of the game where you choose who with who will play, all the widgets are added to the grid"""
+        """The part of the application where you choose who with who will play, all the widgets are added to the grid"""
         self.clear_widget()
         self.window.setStyleSheet("background-image: url(choose_players.png);")
 
@@ -931,6 +931,7 @@ class Interface:
             x -= 1
 
     def evaluate_board_singleplayer(self, new_board, next_player):
+        """Updates the images/ buttons of the board if you are playing with the computer"""
         if not new_board and not next_player:
             self.set_first_player_side_img()
             self.set_second_player_side_img()
@@ -969,6 +970,7 @@ class Interface:
                     self.set_second_player_bank_img()
 
     def evaluate_board_multiplayer(self, new_board, next_player):
+        """Updates the images/ buttons of the board if the players are humans"""
         if not new_board and not next_player:
             self.set_first_player_side_img()
             self.set_second_player_side_img()
@@ -1006,6 +1008,7 @@ class Interface:
                     self.set_first_player_side_img()
 
     def board(self):
+        """The part of the application with the actual game"""
         temp_l = self.left_chosen_players
         temp_r = self.right_chosen_players
         self.clear_widget()
@@ -1044,6 +1047,7 @@ class Interface:
                                  self.mute_button["sy"], self.mute_button["sx"])
 
     def add_label(self, text, key, y, x, sy, sx):
+        """Sets the design for the labels that shows the players and their total wins"""
         label = QLabel(text, self.window)
         label.setAlignment(Qt.AlignCenter)
         label.setStyleSheet(
@@ -1065,6 +1069,7 @@ class Interface:
         self.widgets[key] = label
 
     def end_game(self):
+        """The part of the application that shows the result of the game"""
         self.clear_widget()
 
         winner_wins = -1
@@ -1131,6 +1136,7 @@ class Game:
         self.first_game = True
 
     def restart(self):
+        """Resets the values for the board"""
         self.first_pl_holes = [4, 4, 4, 4, 4, 4]
         self.first_pl_bank = [0]
         self.second_pl_holes = [4, 4, 4, 4, 4, 4]
@@ -1142,6 +1148,7 @@ class Game:
         self.second_player = ""
 
     def choose_first_player(self, players_list):
+        """Choose who will be the first/ second player"""
         if not self.first_game:
             self.restart()
         if players_list[0] == "Computer" or players_list[1] == "Computer":
@@ -1174,6 +1181,7 @@ class Game:
             return first_player, second_player
 
     def verify_state(self):
+        """Verifies if the players holes are empty, or if a player side is empty"""
         first_pl_holes_state = False
         second_pl_holes_state = False
         for index, hole in enumerate(self.first_pl_holes):
@@ -1205,6 +1213,7 @@ class Game:
             self.loop_game = False
 
     def computer_move(self):
+        """Choose a random move for the Computer"""
         self.interface.current_player = "Computer"
         extra_move = False
         rocks = 0
@@ -1265,6 +1274,7 @@ class Game:
             self.interface.evaluate_board_singleplayer([], "")
 
     def move(self, current_player, hole):
+        """Calculates how the board will look after a hole was picked"""
         last_hole_value = -1
         last_list = []
         last_index = None
