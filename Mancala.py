@@ -946,6 +946,7 @@ class Interface:
                 if self.current_player == next_player:
                     self.set_first_player_side()
                     self.set_first_player_bank_img()
+                    self.set_second_player_side_img()
                 # if the current player has no an extra moves
                 else:
                     self.widgets["second_player"].show()
@@ -960,6 +961,7 @@ class Interface:
                 if self.current_player == next_player:
                     self.set_second_player_side_img()
                     self.set_second_player_bank_img()
+                    self.set_first_player_side_img()
                     QtTest.QTest.qWait(2000)
                 # if the current player has no an extra moves
                 else:
