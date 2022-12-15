@@ -16,6 +16,7 @@ from pyqt5_plugins.examplebutton import QtWidgets
 
 class Interface:
     def __init__(self):
+        """"""
         self.app = QApplication(sys.argv)
         self.window = QWidget()
         self.window.setWindowIcon(QIcon('M.png'))
@@ -1070,7 +1071,6 @@ class Interface:
 
     def end_game(self):
         """The part of the application that shows the result of the game"""
-
         winner_wins = -1
         loser_wins = -1
         if self.game.first_pl_bank > self.game.second_pl_bank:
@@ -1113,6 +1113,7 @@ class Interface:
 
 
 class Game:
+    """"""
     def __init__(self, main_interface):
         self.interface = main_interface
         self.first_pl_holes = [4, 4, 4, 4, 4, 4]
