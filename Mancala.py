@@ -1256,8 +1256,11 @@ class Game:
                     break
             if rocks == 0:
                 break
+        # if last rock stopped in an empty hole on the current player side
         if last_list == turn[2] and last_hole_value == 0:
+            # if the hole on the opposite side is not empty
             if turn[1][len(turn[1]) - last_index - 1] != 0:
+                # Add to the current player bank the rocks from the opposite hole side and the last rock
                 turn[0][0] += turn[1][len(turn[1])-last_index-1] + 1
                 turn[1][len(turn[1]) - last_index - 1] = 0
                 turn[2][last_index] = 0
@@ -1329,8 +1332,11 @@ class Game:
                     break
             if rocks == 0:
                 break
+        # if last rock stopped in an empty hole on the current player side
         if last_list == turn[2] and last_hole_value == 0:
+            # if the hole on the opposite side is not empty
             if turn[1][len(turn[1]) - last_index - 1] != 0:
+                # Add to the current player bank the rocks from the opposite hole side and the last rock
                 turn[0][0] += turn[1][len(turn[1])-last_index-1] + 1
                 turn[1][len(turn[1]) - last_index - 1] = 0
                 turn[2][last_index] = 0
