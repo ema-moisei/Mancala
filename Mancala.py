@@ -838,7 +838,7 @@ class Interface:
             x -= 1
 
     def set_computer_side(self):
-        """Sets the holes images for the computer player, whe the computer selected a hole"""
+        """Sets the holes images for the computer player, when the computer selected a hole"""
         if self.computer_side:
             for i in range(6):
                 self.computer_side[i].deleteLater()
