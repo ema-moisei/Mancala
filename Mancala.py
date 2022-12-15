@@ -97,11 +97,9 @@ class Interface:
         self.computer_side = {}
         self.computer_selected_hole = -1
 
-        self.play_again = {"y": 5, "x": 10, "sy": 1, "sx": 2}
+        self.rematch = {"y": 5, "x": 10, "sy": 1, "sx": 2}
         self.tie_label = {"y": 5, "x": 2, "sy": 1, "sx": 1}
-        self.winner = {"y": 2, "x": 5, "sy": 1, "sx": 2}
-        self.winner_w = {"y": 3, "x": 1, "sy": 1, "sx": 4}
-        self.loser_w = {"y": 3, "x": 7, "sy": 1, "sx": 4}
+        self.winner = {"y": 0, "x": 2, "sy": 1, "sx": 3}
 
     def start_music(self):
         """Gets the mp3 file and starts play the song in loop"""
@@ -1072,7 +1070,6 @@ class Interface:
 
     def end_game(self):
         """The part of the application that shows the result of the game"""
-        self.clear_widget()
 
         winner_wins = -1
         loser_wins = -1
@@ -1087,7 +1084,7 @@ class Interface:
             loser = ""
 
         if winner == "":
-            self.window.setStyleSheet("background-image: url(tie.png);")
+            pass
 
         else:
             players_list = PlayerDB.get_player_list()
@@ -1097,30 +1094,22 @@ class Interface:
                 if player["name"] == loser:
                     loser_wins = player["wins"]
 
-            self.window.setStyleSheet("background-image: url(not_tie.png);")
-            self.add_label("The Winner is: " + str(winner), "winner", self.winner["y"], self.winner["x"],
+            message = "The Winner is: " + str(winner) + "\n" + str(winner) + " total wins: " + str(winner_wins) + \
+                      "\n" + str(loser) + " total wins: " + str(loser_wins)
+
+            self.add_label(message, "winner", self.winner["y"], self.winner["x"],
                            self.winner["sy"], self.winner["sx"])
 
-            self.add_label(str(winner) + " total wins: " + str(winner_wins), "winner_wins",
-                           self.winner_w["y"], self.winner_w["x"], self.winner_w["sy"], self.winner_w["sx"])
-            self.add_label(str(loser) + " total wins: " + str(loser_wins), "loser_wins",
-                           self.loser_w["y"], self.loser_w["x"], self.loser_w["sy"], self.loser_w["sx"])
             PlayerDB.save_wins(winner)
 
-        play_again = self.create_menu_button("Play again", self.choose_players, "background.png", self.window)
-        play_again.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.grid.addWidget(play_again, self.play_again["y"], self.play_again["x"], self.play_again["sy"],
-                            self.play_again["sx"])
-        self.widgets["play_again"] = play_again
+        rematch = self.create_menu_button("Rematch", self.board, "background.png", self.window)
+        rematch.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.grid.addWidget(rematch, self.rematch["y"], self.rematch["x"], self.rematch["sy"],
+                            self.rematch["sx"])
+        self.widgets["rematch"] = rematch
 
-        back_to_menu = self.create_menu_button("Back to menu", self.menu_background, "background.png", self.window)
-        back_to_menu.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.grid.addWidget(back_to_menu, self.back_button["y"], self.back_button["x"], self.back_button["sy"],
-                            self.back_button["sx"])
-        self.widgets["back_to_menu"] = back_to_menu
-
-        self.create_music_button(self.mute_button["y"], self.mute_button["x"],
-                                 self.mute_button["sy"], self.mute_button["sx"])
+        self.widgets["second_player"].show()
+        self.widgets["first_player"].show()
 
 
 class Game:
